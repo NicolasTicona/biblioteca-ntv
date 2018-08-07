@@ -11,7 +11,7 @@ if(process.env.NODE_ENV === 'dev'){
     urlDB = 'mongodb://localhost:27017/biblioteca'
 }
 else{
-    urlDB = 'mongodb://biblioteca-user:a123456@ds215172.mlab.com:15172/biblioteca'
+    urlDB = process.env.MONGO_URI
 }
 
 process.env.URLDB = urlDB
