@@ -11,6 +11,7 @@ app.use(bodyParser.urlencoded({extended: false}))
 
 // Rutas
 app.use(require('./rutas/usuario'))
+app.use(require('./auth/login'))
 
 // Conectar Base de Datos
 require('./db/connection')

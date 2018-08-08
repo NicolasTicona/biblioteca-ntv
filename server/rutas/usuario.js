@@ -9,8 +9,11 @@ const _ = require('underscore')
 // Operaciones
 const { InsertarUsuario, ObtenerUsuario, ObtenerUsuarios, ActualizarUsuario, DeshabilitarUsuario } = require('./operaciones')
 
+// Autorizaciones
+const { verificarToken, verificarAdminRole } = require('../auth/middlewares/autenticacion')
 
-router.get('/usuarios', (req,res) => {
+
+router.get('/usuarios', verificarToken, (req,res) => {
     
     ObtenerUsuarios()
         .then(usuariosDb => res.json({
@@ -25,7 +28,7 @@ router.get('/usuarios', (req,res) => {
 })
 
 
-router.post('/usuario', (req,res) => {
+router.post('/usuario', [verificarToken, verificarAdminRole], (req,res) => {
 
     let body = req.body
   
@@ -52,10 +55,10 @@ router.post('/usuario', (req,res) => {
 })
 
 
-router.put('/usuario/:id', (req,res) => {
+router.put('/usuario/:id', verificarToken, (req,res) => {
 
     let id = req.params.id
-    let body = _.pick(req.body, ['nombre','email','img','role','estado'])
+    let body = _.pick(req.body, ['nombre','email','img','google'])
 
     ActualizarUsuario(id, body)
         .then(usuario_actualizado => res.json({
@@ -70,7 +73,7 @@ router.put('/usuario/:id', (req,res) => {
 })
 
 
-router.delete('/usuario/:id', (req,res) => {
+router.delete('/usuario/:id', [verificarToken, verificarAdminRole], (req,res) => {
 
     let id = req.params.id
 
